@@ -28,4 +28,26 @@ public class BuilderController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // Login API
+    @PostMapping("/login")
+    public ResponseEntity<?> loginBuilder(@RequestParam String email, @RequestParam String password) {
+        try {
+            Builder builder = builderService.loginBuilder(email, password);
+            return ResponseEntity.ok(builder); // Return builder profile on successful login
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+    // Fetch builder profile by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBuilderProfile(@PathVariable Long id) {
+        Builder builder = builderService.getBuilderProfile(id);
+        if (builder == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(builder);
+    }
 }

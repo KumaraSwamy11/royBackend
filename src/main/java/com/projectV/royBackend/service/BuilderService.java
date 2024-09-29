@@ -55,7 +55,32 @@ public class BuilderService {
         }
 
 
+
+
         return builderRepository.save(builder); // Save builder to the database
 
     }
+
+    // Login logic
+    public Builder loginBuilder(String email, String password) throws Exception {
+        // Find builder by email
+        Builder builder = builderRepository.findByEmail(email);
+        if (builder == null) {
+            throw new Exception("Builder not found.");
+        }
+
+        // Check if the password matches
+        if (!passwordEncoder.matches(password, builder.getPassword())) {
+            throw new Exception("Invalid credentials.");
+        }
+
+        return builder; // Return builder profile if login is successful
+    }
+
+    // BuilderService.java
+     //Get Builder using Id
+    public Builder getBuilderProfile(Long id) {
+        return builderRepository.findById(id).orElse(null);
+    }
+
 }
