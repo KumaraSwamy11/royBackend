@@ -83,4 +83,11 @@ public class BuilderService {
         return builderRepository.findById(id).orElse(null);
     }
 
+    // BuilderService.java
+
+    public void saveBuilder(Builder builder) {
+        builderRepository.save(builder);
+    }
+
+
 }
