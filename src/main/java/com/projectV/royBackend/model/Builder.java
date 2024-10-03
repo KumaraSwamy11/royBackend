@@ -1,6 +1,8 @@
 package com.projectV.royBackend.model;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 
 @Entity
 public class Builder {
@@ -16,6 +18,9 @@ public class Builder {
     private int experience;
     private String password;
     private String photoPath; // Store photo as a byte array
+
+    @ManyToMany(mappedBy = "builders")
+    private Set<Project> projects;
 
     public String getName() {
         return name;
