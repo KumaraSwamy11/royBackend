@@ -59,17 +59,41 @@ public class BuilderController {
     }
 
 
-    // Fetch builder profile by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBuilderProfile(@RequestHeader("Authorization") String token,@PathVariable Long id) {
-        String email=jwtUtil.extractUsername(token.substring(7));
+    // Fetch builder profile by ID Before Error
+//    @GetMapping("/{id}")
+//    public ResponseEntity<?> getBuilderProfile(@RequestHeader("Authorization") String token,@PathVariable Long id) {
+//        String email=jwtUtil.extractUsername(token.substring(7));
+//
+//        Builder builder = builderService.getBuilderProfile(id);
+//        if (builder == null || !builder.getEmail().equals(email)) {
+//            return ResponseEntity.status(403).body("Unauthorized");
+//        }
+//        return ResponseEntity.ok(builder);
+//    }
 
+    //After Generating token
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBuilderProfile(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        // Validate if token starts with 'Bearer '
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(400).body("Invalid Token");
+        }
+
+        String email;
+        try {
+            email = jwtUtil.extractUsername(token.substring(7)); // Extract email from token (remove 'Bearer ')
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Token extraction failed: " + e.getMessage());
+        }
+
+        // Fetch builder profile
         Builder builder = builderService.getBuilderProfile(id);
         if (builder == null || !builder.getEmail().equals(email)) {
             return ResponseEntity.status(403).body("Unauthorized");
         }
         return ResponseEntity.ok(builder);
     }
+
 
     //Update the Builder Profile
     @PutMapping("/{id}")

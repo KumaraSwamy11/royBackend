@@ -28,7 +28,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 10 hours
                 .signWith(key, SignatureAlgorithm.HS256) // Use the key instead of a plain secret
                 .compact();
     }
@@ -45,6 +45,7 @@ public class JwtUtil {
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key) // Use parserBuilder and set the signing key properly
+                .setAllowedClockSkewSeconds(300)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
