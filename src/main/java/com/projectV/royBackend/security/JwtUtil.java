@@ -18,8 +18,10 @@ public class JwtUtil {
     private final String secret = "projectVSecretKeyprojectVSecretKey"; // Ensure this is 32+ characters long
     private final SecretKey key = Keys.hmacShaKeyFor(secret.getBytes()); // Convert secret to a secure key
 
-    public String generateToken(String email) {
+    public String generateToken(String email, Long id) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);  // **Added builderId to the claims**
+
         return createToken(claims, email);
     }
 

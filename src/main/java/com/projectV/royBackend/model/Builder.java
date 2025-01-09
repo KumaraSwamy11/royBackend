@@ -22,6 +22,14 @@ public class Builder {
     @ManyToMany(mappedBy = "builders")
     private Set<Project> projects;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
